@@ -1,0 +1,47 @@
+import { Button, VerticalBox , TabWidget,  CheckBox, GroupBox, HorizontalBox} from "std-widgets.slint";
+
+import { AvaSetting, AvaSettings } from "global.slint";
+
+export {
+    AvaSetting,
+    AvaSettings
+}
+
+export AppWindow := Window {
+    title: "Green Dam Battery Contorl";
+    min-width: 500px;
+    height: 500px;
+    callback ChangeBattery();
+    VerticalLayout {
+        HorizontalLayout {
+            for unitsetting in AvaSettings.settings : GroupBox {
+                VerticalBox {
+                    Text { text: unitsetting.name; }
+                    Text { text: "CurrentSelected: \{unitsetting.current}"; }
+                    Text { text: "ToChangeSelected: \{unitsetting.tochange}"; }
+                    for selected in unitsetting.selects : CheckBox {
+                        text: selected;
+                        checked: selected == unitsetting.tochange;
+                        toggled => { 
+                            if(checked) {
+                                unitsetting.tochange = selected;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        HorizontalBox { 
+            alignment: end;
+            Button { 
+                height: 30px;
+                text: "Cancel";
+            }
+            Button { 
+                height: 30px;
+                text: "Apply";
+                clicked => { ChangeBattery(); }
+            }
+        }
+    }
+}
