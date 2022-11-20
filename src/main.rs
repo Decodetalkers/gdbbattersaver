@@ -49,17 +49,19 @@ fn main() {
         let globals = global.get_settings();
         for glob in globals.iter() {
             if let Err(e) = set_battery(&glob.name, &glob.tochange) {
+                log::error!("Error: {e}");
                 let _ = Notification::new()
                     .summary("Performance Error")
                     .body(&format!("Error: {e}"))
-                    .icon("gdgbattersaver")
+                    .icon("Green_Dam_Girl")
                     .timeout(10000)
                     .show();
             } else {
+                log::info!("{} change to {}", glob.name, glob.tochange);
                 let _ = Notification::new()
                     .summary("Performance Changed")
                     .body(&format!("{} change to {}", glob.name, glob.tochange))
-                    .icon("gdgbattersaver")
+                    .icon("Green_Dam_Girl")
                     .timeout(10000)
                     .show();
             };

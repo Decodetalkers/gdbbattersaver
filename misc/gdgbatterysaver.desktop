@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=gdgbatterysaver
+Icon=Green_Dam_Girl
+Terminal=false
+Categories=Application;System;Settings
+
+Name=gdgbatterysaver
+Comment=Green Dam Girl Manager your Battery
+Keywords=Battery;Management

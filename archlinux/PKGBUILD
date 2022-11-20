@@ -1,0 +1,22 @@
+pkgname=gdgbattersaver
+pkgver=1.0
+pkgrel=1.0
+pkgdesc='Green Dam Girl control battery'
+arch=('x86_64' 'aarch64')
+url='https://github.com/Decodetalkers/gdbbattersaver'
+license=('MIT-2.0')
+depends=('qt5-base')
+makedepends=('git' 'ninja' 'meson' 'rust')
+source=('source.tar.gz')
+sha512sums=('SKIP')
+
+build() {
+  meson build \
+    -Dprefix=/usr \
+    -Dbuildtype=release
+  ninja -C build
+}
+
+package() {
+  DESTDIR="$pkgdir" ninja -C build install
+}

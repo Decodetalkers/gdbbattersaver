@@ -1,5 +1,5 @@
 [package]
-name = "gdgbattersaver"
+name = "gdgbatterysaver"
 version = "0.1.0"
 authors = ["ShootingStarDragons <ShootingStarDragons@protonmail.com>"]
 edition = "2021"
@@ -8,6 +8,8 @@ build = "build.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0.66"
+log = "0.4.17"
 notify-rust = "4.5.10"
 slint = "0.3"
 
