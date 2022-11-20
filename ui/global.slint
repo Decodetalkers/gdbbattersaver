@@ -2,9 +2,11 @@ export struct AvaSetting := {
     name :string,
     current: string,
     tochange: string,
-    selects: [string]
+    selects: [string],
+    doc: string,
 }
 
 export global AvaSettings := {
     property <[AvaSetting]> settings :[] ;
+    property <string> about ;
 }

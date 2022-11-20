@@ -1,0 +1,67 @@
+import { Button, VerticalBox , TabWidget,  CheckBox, GroupBox, HorizontalBox, TextEdit} from "std-widgets.slint";
+
+import { AvaSetting, AvaSettings } from "global.slint";
+
+export BatterySavePage :=  VerticalLayout {
+    callback onChangeBattery();
+    callback onExit();
+    callback onRefresh();
+    HorizontalBox { 
+        alignment: center;
+
+        Text { 
+            text: "Green Dam Girl Batter Saver";
+            font-size: 25px;
+            font-weight: 20;
+        }
+        Button {
+            height: 35px;
+            width: 35px;
+            Image {
+                source: @image-url("../misc/icons/refresh.svg");
+                height: 35px;
+                width: 35px;
+            }
+            clicked => { onRefresh(); }
+        }
+    }
+    HorizontalLayout {
+        for unitsetting in AvaSettings.settings : GroupBox {
+            VerticalBox {
+                Text { 
+                    text: unitsetting.name; 
+                    font-size: 20px;
+                    font-weight: 10;
+                }
+                Text { text: "CurrentSelected: \{unitsetting.current}"; }
+                Text { text: "ToChangeSelected: \{unitsetting.tochange}"; }
+                for selected in unitsetting.selects : CheckBox {
+                    text: selected;
+                    checked: selected == unitsetting.tochange;
+                    toggled => { 
+                        if(checked) {
+                            unitsetting.tochange = selected;
+                        }
+                    }
+                }
+                TextEdit { 
+                    text: unitsetting.doc;
+                    wrap: word-wrap;
+                }
+            }
+        }
+    }
+    HorizontalBox { 
+        alignment: end;
+        Button { 
+            height: 30px;
+            text: "Cancel";
+            clicked => { onExit(); }
+        }
+        Button { 
+            height: 30px;
+            text: "Apply";
+            clicked => { onChangeBattery(); }
+        }
+    }
+}

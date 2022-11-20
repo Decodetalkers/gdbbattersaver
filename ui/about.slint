@@ -1,0 +1,23 @@
+import { Button, VerticalBox , TabWidget,  CheckBox, GroupBox, HorizontalBox, TextEdit} from "std-widgets.slint";
+import { AvaSetting, AvaSettings } from "global.slint";
+
+export AboutPage := VerticalBox {
+    HorizontalBox {
+        alignment: center;
+        Text {
+            font-weight: 30;
+            font-size: 30px;
+            text: "Green Dam Girl Battery Saver";
+        }
+    }
+    HorizontalBox {
+        alignment: center;
+        Image {
+            source: @image-url("../misc/icons/Green_Dam_Girl.jpg");
+            width: root.width / 2;
+        }
+    }
+    TextEdit { 
+        text: AvaSettings.about;
+    }
+}
