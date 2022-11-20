@@ -2,7 +2,7 @@ project(
   'gdgbatterysaver',
   'rust',
   version: '0.1',
-  license: 'MIT-2.0',
+  license: 'MIT',
   meson_version: '>= 0.59'
 )
 
