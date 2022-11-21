@@ -3,6 +3,14 @@ use anyhow::{anyhow, Result};
 use std::io::Write;
 use std::process::{Command, Stdio};
 
+// TODO: FREQUEQ
+#[allow(dead_code)]
+const CPUFREQ: &str = "/sys/devices/system/cpu/cpufreq";
+#[allow(dead_code)]
+const ENERGY: &str = "energy_performance_preference";
+#[allow(dead_code)]
+const SCALLING: &str = "scaling_governor";
+
 pub fn set_battery(name: &str, tochange: &str) -> Result<()> {
     let path = match name {
         "IntelPstate" => ENERGY_PERFORMANCE_PRE,
@@ -20,4 +28,31 @@ pub fn set_battery(name: &str, tochange: &str) -> Result<()> {
     stdin.write_all(tochange.as_bytes())?;
     child.wait()?;
     Ok(())
+}
+
+// TODO: Battery Groups
+#[allow(dead_code)]
+pub fn set_battery_v2(name: &str, _tochange: &str) -> Result<()> {
+    match name {
+        "IntelPstate" => {
+            if let Ok(paths) = glob::glob(CPUFREQ) {
+                for path in paths.flatten() {
+                    let nextpath = path.join(CPUFREQ);
+                    if nextpath.exists() {}
+                }
+            }
+            Ok(())
+        }
+        "AMDGPU" => Ok(()),
+        "ScalingGovernor" => {
+            if let Ok(paths) = glob::glob(CPUFREQ) {
+                for path in paths.flatten() {
+                    let nextpath = path.join(SCALLING);
+                    if nextpath.exists() {}
+                }
+            }
+            Ok(())
+        }
+        _ => Err(anyhow!("MisMatch, Cannot find Battery Performance"))
+    }
 }

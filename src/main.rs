@@ -1,4 +1,3 @@
-#![feature(fs_try_exists)]
 mod batterycommand;
 mod config;
 use batterycommand::set_battery;

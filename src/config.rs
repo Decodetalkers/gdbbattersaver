@@ -56,14 +56,14 @@ pub fn get_all_settings() -> Vec<AvailableSetting> {
             });
         };
     };
-    if let Ok(true) = Path::new(ENERGY_PERFORMANCE_PRE).try_exists() {
+    if Path::new(ENERGY_PERFORMANCE_PRE).exists() {
         output_append(
             ENERGY_PERFORMANCE_AVALABLE,
             ENERGY_PERFORMANCE_PRE,
             "IntelPstate",
             include_str!("../misc/about/intel_pstate.md"),
         );
-    } else if let Ok(true) = Path::new(SCALING_GOVERNOR).try_exists() {
+    } else if Path::new(SCALING_GOVERNOR).exists() {
         output_append(
             SCALING_GOVERNOR_AVALABLE,
             SCALING_GOVERNOR,
@@ -72,7 +72,7 @@ pub fn get_all_settings() -> Vec<AvailableSetting> {
         );
     }
 
-    if let Ok(true) = Path::new(AMD_GPU_GOVERNOR).try_exists() {
+    if Path::new(AMD_GPU_GOVERNOR).exists() {
         if let Ok(content) = fs::read_to_string(Path::new(AMD_GPU_GOVERNOR)) {
             output.push(AvailableSetting {
                 name: "AMDGPU".to_string(),
