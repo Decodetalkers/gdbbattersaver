@@ -1,58 +1,71 @@
-use crate::config::{AMD_GPU_GOVERNOR, ENERGY_PERFORMANCE_PRE, SCALING_GOVERNOR};
+use crate::settings::AMD_GPU_GOVERNOR;
+use crate::config::HELPER_PATH;
 use anyhow::{anyhow, Result};
-use std::io::Write;
-use std::process::{Command, Stdio};
-
+use std::path::Path;
+use std::process::Command;
 // TODO: FREQUEQ
 #[allow(dead_code)]
-const CPUFREQ: &str = "/sys/devices/system/cpu/cpufreq";
+const CPUFREQ: &str = "/sys/devices/system/cpu/cpufreq/*";
 #[allow(dead_code)]
 const ENERGY: &str = "energy_performance_preference";
 #[allow(dead_code)]
 const SCALLING: &str = "scaling_governor";
 
-pub fn set_battery(name: &str, tochange: &str) -> Result<()> {
-    let path = match name {
-        "IntelPstate" => ENERGY_PERFORMANCE_PRE,
-        "AMDGPU" => AMD_GPU_GOVERNOR,
-        "ScalingGovernor" => SCALING_GOVERNOR,
-        _ => return Err(anyhow!("MisMatch, Cannot find Battery Performance")),
-    };
-    let mut child = Command::new("pkexec")
-        .stdin(Stdio::piped())
-        .arg("tee")
-        .arg("-a")
-        .arg(path)
-        .spawn()?;
-    let stdin = child.stdin.as_mut().unwrap();
-    stdin.write_all(tochange.as_bytes())?;
-    child.wait()?;
-    Ok(())
-}
-
 // TODO: Battery Groups
-#[allow(dead_code)]
-pub fn set_battery_v2(name: &str, _tochange: &str) -> Result<()> {
+
+pub fn set_battery(name: &str, tochange: &str) -> Result<()> {
     match name {
         "IntelPstate" => {
             if let Ok(paths) = glob::glob(CPUFREQ) {
-                for path in paths.flatten() {
-                    let nextpath = path.join(CPUFREQ);
-                    if nextpath.exists() {}
-                }
+                let paths = paths
+                    .flatten()
+                    .map(|path| path.join(ENERGY))
+                    .filter(|path| path.exists())
+                    .map(|path| {
+                        let path = path.clone();
+                        path.to_str().unwrap().to_string()
+                    })
+                    .collect::<Vec<String>>();
+                Command::new("pkexec")
+                    .arg(HELPER_PATH)
+                    .arg(tochange)
+                    .args(paths)
+                    .spawn()?
+                    .wait()?;
             }
             Ok(())
         }
-        "AMDGPU" => Ok(()),
+        "AMDGPU" => {
+            if Path::new(AMD_GPU_GOVERNOR).exists() {
+                Command::new("pkexec")
+                    .arg(HELPER_PATH)
+                    .arg(tochange)
+                    .arg(AMD_GPU_GOVERNOR)
+                    .spawn()?
+                    .wait()?;
+            }
+            Ok(())
+        }
         "ScalingGovernor" => {
             if let Ok(paths) = glob::glob(CPUFREQ) {
-                for path in paths.flatten() {
-                    let nextpath = path.join(SCALLING);
-                    if nextpath.exists() {}
-                }
+                let paths = paths
+                    .flatten()
+                    .map(|path| path.join(SCALLING))
+                    .filter(|path| path.exists())
+                    .map(|path| {
+                        let path = path.clone();
+                        path.to_str().unwrap().to_string()
+                    })
+                    .collect::<Vec<String>>();
+                Command::new("pkexec")
+                    .arg(HELPER_PATH)
+                    .arg(tochange)
+                    .args(paths)
+                    .spawn()?
+                    .wait()?;
             }
             Ok(())
         }
-        _ => Err(anyhow!("MisMatch, Cannot find Battery Performance"))
+        _ => Err(anyhow!("MisMatch, Cannot find Battery Performance")),
     }
 }

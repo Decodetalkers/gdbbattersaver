@@ -1,0 +1,9 @@
+#!/bin/bash
+
+setname=$1  
+shift
+paths=("$@") # Rebuild the array with rest of arguments
+for ((i = 0; i < ${#paths[@]}; i++))
+do
+    echo $setname | tee -a "${paths[$i]}"
+done

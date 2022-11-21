@@ -30,6 +30,25 @@ datadir = prefix / get_option('datadir')
 icondir = datadir / 'pixmaps'
 desktopdir = datadir / 'applications'
 bindir = prefix / get_option('bindir')
+libdir = prefix / get_option('libdir')
+helpdir = libdir / 'gdgbatterysaver' 
+
+global_conf = configuration_data()
+global_conf.set_quoted('HELPER_PATH', helpdir / 'gdghelper' )
+
+config = configure_file(
+  input: 'src/config.rs.in',
+  output: 'config.rs',
+  configuration: global_conf
+)
+
+run_command(
+  'cp',
+  meson.project_build_root() / 'config.rs',
+  meson.project_source_root() / 'src' / 'config.rs',
+  check: true
+)
+
 
 gdgbattersaver_target = custom_target('gdgbatterysaver',
   output: 'gdgbatterysaver',
@@ -43,6 +62,12 @@ gdgbattersaver_target = custom_target('gdgbatterysaver',
 install_data('misc/icons/Green_Dam_Girl.png',
   install_dir: icondir
 )
+
+install_data('misc/gdghelper',
+  install_dir: helpdir
+)
+
+
 install_data('misc/gdgbatterysaver.desktop',
   install_dir: desktopdir
 )

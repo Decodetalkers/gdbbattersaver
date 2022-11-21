@@ -1,0 +1,1 @@
+pub const HELPER_PATH: &str = @HELPER_PATH@;

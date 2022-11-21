@@ -1,7 +1,8 @@
-mod batterycommand;
 mod config;
+mod batterycommand;
+mod settings;
 use batterycommand::set_battery;
-use config::AvailableSetting;
+use settings::AvailableSetting;
 use notify_rust::Notification;
 use slint::{Model, SharedString, VecModel};
 use std::rc::Rc;
@@ -27,7 +28,7 @@ impl From<AvailableSetting> for AvaSetting {
 }
 
 fn main() {
-    let all_settings = config::get_all_settings();
+    let all_settings = settings::get_all_settings();
     let ui = AppWindow::new();
     let globals = AvaSettings::get(&ui);
     globals.set_settings(
@@ -65,7 +66,7 @@ fn main() {
                     .show();
             };
         }
-        let all_settings = config::get_all_settings();
+        let all_settings = settings::get_all_settings();
         global.set_settings(
             Rc::new(VecModel::from(
                 all_settings
@@ -82,7 +83,7 @@ fn main() {
     ui.on_Refresh(move || {
         let ui = ui_handle.unwrap();
         let global = AvaSettings::get(&ui);
-        let all_settings = config::get_all_settings();
+        let all_settings = settings::get_all_settings();
         global.set_settings(
             Rc::new(VecModel::from(
                 all_settings
