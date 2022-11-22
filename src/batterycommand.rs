@@ -1,5 +1,5 @@
-use crate::settings::AMD_GPU_GOVERNOR;
 use crate::config::HELPER_PATH;
+use crate::settings::AMD_GPU_GOVERNOR;
 use anyhow::{anyhow, Result};
 use std::path::Path;
 use std::process::Command;
@@ -21,10 +21,7 @@ pub fn set_battery(name: &str, tochange: &str) -> Result<()> {
                     .flatten()
                     .map(|path| path.join(ENERGY))
                     .filter(|path| path.exists())
-                    .map(|path| {
-                        let path = path.clone();
-                        path.to_str().unwrap().to_string()
-                    })
+                    .map(|path| path.to_str().unwrap().to_string())
                     .collect::<Vec<String>>();
                 Command::new("pkexec")
                     .arg(HELPER_PATH)
@@ -52,10 +49,7 @@ pub fn set_battery(name: &str, tochange: &str) -> Result<()> {
                     .flatten()
                     .map(|path| path.join(SCALLING))
                     .filter(|path| path.exists())
-                    .map(|path| {
-                        let path = path.clone();
-                        path.to_str().unwrap().to_string()
-                    })
+                    .map(|path| path.to_str().unwrap().to_string())
                     .collect::<Vec<String>>();
                 Command::new("pkexec")
                     .arg(HELPER_PATH)

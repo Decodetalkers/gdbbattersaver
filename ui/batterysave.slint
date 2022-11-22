@@ -2,6 +2,12 @@ import { Button, VerticalBox , TabWidget,  CheckBox, GroupBox, HorizontalBox, Te
 
 import { AvaSetting, AvaSettings } from "global.slint";
 
+export global BatteryCallbacks := {
+    callback Exit();
+    callback ChangeBattery();
+    callback Refresh();
+}
+
 export BatterySavePage :=  VerticalLayout {
     callback onChangeBattery();
     callback onExit();
@@ -22,7 +28,7 @@ export BatterySavePage :=  VerticalLayout {
                 height: 35px;
                 width: 35px;
             }
-            clicked => { onRefresh(); }
+            clicked => { BatteryCallbacks.Refresh(); }
         }
     }
     HorizontalLayout {
@@ -56,12 +62,12 @@ export BatterySavePage :=  VerticalLayout {
         Button { 
             height: 30px;
             text: "Cancel";
-            clicked => { onExit(); }
+            clicked => { BatteryCallbacks.Exit(); }
         }
         Button { 
             height: 30px;
             text: "Apply";
-            clicked => { onChangeBattery(); }
+            clicked => { BatteryCallbacks.ChangeBattery(); }
         }
     }
 }

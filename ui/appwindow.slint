@@ -4,27 +4,23 @@ import { AvaSetting, AvaSettings } from "global.slint";
 
 import { AboutPage } from "about.slint";
 
-import { BatterySavePage } from "batterysave.slint";
+import { BatterySavePage, BatteryCallbacks } from "batterysave.slint";
 
 export {
     AvaSetting,
     AvaSettings
 }
 
+export { BatteryCallbacks }
+
 export AppWindow := Window {
     title: "Green Dam Battery Contorl";
     min-width: 500px;
     height: 1000px;
-    callback ChangeBattery();
-    callback Exit();
-    callback Refresh();
     TabWidget {
         Tab {
             title: "Battery Set";
             BatterySavePage { 
-                onChangeBattery => { ChangeBattery() }
-                onExit => { Exit() }
-                onRefresh => { Refresh() }
             }
         }
         Tab {

@@ -1,9 +1,9 @@
-mod config;
 mod batterycommand;
+mod config;
 mod settings;
 use batterycommand::set_battery;
-use settings::AvailableSetting;
 use notify_rust::Notification;
+use settings::AvailableSetting;
 use slint::{Model, SharedString, VecModel};
 use std::rc::Rc;
 slint::include_modules!();
@@ -27,23 +27,10 @@ impl From<AvailableSetting> for AvaSetting {
     }
 }
 
-fn main() {
-    let all_settings = settings::get_all_settings();
-    let ui = AppWindow::new();
-    let globals = AvaSettings::get(&ui);
-    globals.set_settings(
-        Rc::new(VecModel::from(
-            all_settings
-                .into_iter()
-                .map(|unit| unit.into())
-                .collect::<Vec<AvaSetting>>(),
-        ))
-        .into(),
-    );
-    globals.set_about(include_str!("../misc/about/aboutapp.md").into());
-
+fn init_slots(ui: &AppWindow) {
+    let battery_callbacks = BatteryCallbacks::get(ui);
     let ui_handle = ui.as_weak();
-    ui.on_ChangeBattery(move || {
+    battery_callbacks.on_ChangeBattery(move || {
         let ui = ui_handle.unwrap();
         let global = AvaSettings::get(&ui);
         let globals = global.get_settings();
@@ -77,10 +64,9 @@ fn main() {
             .into(),
         );
     });
-
     let ui_handle = ui.as_weak();
 
-    ui.on_Refresh(move || {
+    battery_callbacks.on_Refresh(move || {
         let ui = ui_handle.unwrap();
         let global = AvaSettings::get(&ui);
         let all_settings = settings::get_all_settings();
@@ -95,9 +81,27 @@ fn main() {
         );
     });
 
-    ui.on_Exit(|| {
+    battery_callbacks.on_Exit(|| {
         let _ = slint::quit_event_loop();
     });
+}
+
+fn main() {
+    let all_settings = settings::get_all_settings();
+    let ui = AppWindow::new();
+    let globals = AvaSettings::get(&ui);
+    globals.set_settings(
+        Rc::new(VecModel::from(
+            all_settings
+                .into_iter()
+                .map(|unit| unit.into())
+                .collect::<Vec<AvaSetting>>(),
+        ))
+        .into(),
+    );
+    globals.set_about(include_str!("../misc/about/aboutapp.md").into());
+
+    init_slots(&ui);
     //ui.on_request_increase_value(move || {
     //    let ui = ui_handle.unwrap();
     //    ui.set_counter(ui.get_counter() + 1);
