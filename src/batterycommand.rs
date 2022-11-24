@@ -3,12 +3,8 @@ use crate::settings::AMD_GPU_GOVERNOR;
 use anyhow::{anyhow, Result};
 use std::path::Path;
 use std::process::Command;
-// TODO: FREQUEQ
-#[allow(dead_code)]
 const CPUFREQ: &str = "/sys/devices/system/cpu/cpufreq/*";
-#[allow(dead_code)]
 const ENERGY: &str = "energy_performance_preference";
-#[allow(dead_code)]
 const SCALLING: &str = "scaling_governor";
 
 // TODO: Battery Groups
