@@ -42,12 +42,12 @@ pub fn get_all_settings() -> Vec<AvailableSetting> {
             fs::read_to_string(Path::new(path)),
             fs::read_to_string(current),
         ) {
-            let mut selects: Vec<&str> = content.split(' ').collect();
-            if matches!(selects.last(), Some(&"\n")) {
-                selects.pop();
-            }
-            let selects = selects.into_iter().map(|unit| unit.to_string()).collect();
-            let currentselected = content_current.split('\n').collect::<Vec<&str>>()[0].into();
+            let selects: Vec<String> = content
+                .trim()
+                .split(' ')
+                .map(|unit| unit.to_string())
+                .collect();
+            let currentselected = content_current.trim().to_string();
             output.push(AvailableSetting {
                 name: name.to_string(),
                 currentselected,
@@ -76,7 +76,7 @@ pub fn get_all_settings() -> Vec<AvailableSetting> {
         if let Ok(content) = fs::read_to_string(Path::new(AMD_GPU_GOVERNOR)) {
             output.push(AvailableSetting {
                 name: "AMDGPU".to_string(),
-                currentselected: content.split('\n').collect::<Vec<&str>>()[0].into(),
+                currentselected: content.trim().to_string(),
                 selects: AMD_GPU_GOVERNOR_AVALABLE
                     .map(|unit| unit.to_string())
                     .to_vec(),

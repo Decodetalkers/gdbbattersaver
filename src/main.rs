@@ -102,10 +102,6 @@ fn run_main() {
     globals.set_about(include_str!("../misc/about/aboutapp.md").into());
 
     init_slots(&ui);
-    //ui.on_request_increase_value(move || {
-    //    let ui = ui_handle.unwrap();
-    //    ui.set_counter(ui.get_counter() + 1);
-    //});
 
     ui.run();
 }
