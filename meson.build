@@ -10,18 +10,35 @@ cargo = find_program('cargo', required: true)
 rustc = find_program('rustc', required: true)
 
 if get_option('debug')
-  command = [
-    cargo, 'build',
-    '&&',
-    'cp', meson.global_source_root() / 'target' / 'debug' / meson.project_name(), '@OUTPUT@'
-  ]
+  if get_option('enable-tray')
+    command = [
+      cargo, 'run', '--features=tray',
+      '&&',
+      'cp', meson.global_source_root() / 'target' / 'debug' / meson.project_name(), '@OUTPUT@'
+    ]
+  else
+    command = [
+      cargo, 'run',
+      '&&',
+      'cp', meson.global_source_root() / 'target' / 'debug' / meson.project_name(), '@OUTPUT@'
+    ]
+  endif
 else
-  command = [
-    cargo, 'build',
-    '--release',
-    '&&',
-    'cp', meson.global_source_root() / 'target' / 'release' / meson.project_name(), '@OUTPUT@'
-  ]
+  if get_option('enable-tray')
+    command = [
+      cargo, 'build',
+      '--release',
+      '&&',
+      'cp', meson.global_source_root() / 'target' / 'release' / meson.project_name(), '@OUTPUT@'
+    ]
+  else
+    command = [
+      cargo, 'build', '--features=tray',
+      '--release',
+      '&&',
+      'cp', meson.global_source_root() / 'target' / 'release' / meson.project_name(), '@OUTPUT@'
+    ]
+  endif
 endif
 
 prefix = get_option('prefix')
