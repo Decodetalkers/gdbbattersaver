@@ -126,6 +126,12 @@ fn main() {
         })
         .unwrap();
 
+        tray.add_menu_item("Exit", || {
+            let _ = slint::quit_event_loop();
+            gtk::main_quit();
+        })
+        .unwrap();
+
         gtk::main();
     }
 
