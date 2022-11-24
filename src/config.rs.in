@@ -1,1 +1,2 @@
+// do not edit, it is auto config by meson
 pub const HELPER_PATH: &str = @HELPER_PATH@;

@@ -86,7 +86,7 @@ fn init_slots(ui: &AppWindow) {
     });
 }
 
-fn main() {
+fn run_main() {
     let all_settings = settings::get_all_settings();
     let ui = AppWindow::new();
     let globals = AvaSettings::get(&ui);
@@ -108,4 +108,33 @@ fn main() {
     //});
 
     ui.run();
+}
+
+fn main() {
+    #[cfg(feature = "tray")]
+    {
+        use tray_item::TrayItem;
+        gtk::init().unwrap();
+
+        let mut tray = TrayItem::new("Green_Dam_Girl", "Green_Dam_Girl").unwrap();
+
+        tray.add_label("Select").unwrap();
+
+        tray.add_menu_item("Show", || {
+            run_main();
+        })
+        .unwrap();
+
+        tray.add_menu_item("Hide", || {
+            let _ = slint::quit_event_loop();
+        })
+        .unwrap();
+
+        gtk::main();
+    }
+
+    #[cfg(not(feature = "tray"))]
+    {
+        run_main();
+    }
 }
