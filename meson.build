@@ -26,14 +26,14 @@ if get_option('debug')
 else
   if get_option('enable-tray')
     command = [
-      cargo, 'build',
+      cargo, 'build', '--features=tray',
       '--release',
       '&&',
       'cp', meson.global_source_root() / 'target' / 'release' / meson.project_name(), '@OUTPUT@'
     ]
   else
     command = [
-      cargo, 'build', '--features=tray',
+      cargo, 'build',
       '--release',
       '&&',
       'cp', meson.global_source_root() / 'target' / 'release' / meson.project_name(), '@OUTPUT@'
@@ -83,7 +83,6 @@ install_data('misc/icons/Green_Dam_Girl.png',
 install_data('misc/gdghelper',
   install_dir: helpdir
 )
-
 
 install_data('misc/gdgbatterysaver.desktop',
   install_dir: desktopdir
