@@ -1,6 +1,6 @@
 [package]
 name = "gdgbatterysaver"
-version = "0.2.2"
+version = "0.2.3"
 authors = ["ShootingStarDragons <ShootingStarDragons@protonmail.com>"]
 edition = "2021"
 build = "build.rs"
@@ -11,14 +11,14 @@ build = "build.rs"
 anyhow = "1.0.66"
 glob = "0.3.0"
 log = "0.4.17"
-notify-rust = "4.5.10"
-slint = "0.3.2"
+notify-rust = "4.6.0"
+slint = "0.3.3"
 
 tray-item = { version = "0.7.1", optional = true }
 gtk = { version = "0.15.1", optional = true }
 
 [build-dependencies]
-slint-build = "0.3"
+slint-build = "0.3.3"
 
 [features]
 tray = ["gtk", "tray-item"]
