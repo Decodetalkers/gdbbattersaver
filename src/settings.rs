@@ -56,19 +56,22 @@ pub fn get_all_settings() -> Vec<AvailableSetting> {
             });
         };
     };
+
+    if Path::new(SCALING_GOVERNOR).exists() {
+        output_append(
+            SCALING_GOVERNOR_AVALABLE,
+            SCALING_GOVERNOR,
+            "ScalingGovernor",
+            include_str!("../misc/about/kernel_cpu.md"),
+        );
+    }
+
     if Path::new(ENERGY_PERFORMANCE_PRE).exists() {
         output_append(
             ENERGY_PERFORMANCE_AVALABLE,
             ENERGY_PERFORMANCE_PRE,
             "IntelPstate",
             include_str!("../misc/about/intel_pstate.md"),
-        );
-    } else if Path::new(SCALING_GOVERNOR).exists() {
-        output_append(
-            SCALING_GOVERNOR_AVALABLE,
-            SCALING_GOVERNOR,
-            "ScalingGovernor",
-            include_str!("../misc/about/kernel_cpu.md"),
         );
     }
 
