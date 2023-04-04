@@ -1,7 +1,7 @@
 import { Button, VerticalBox , TabWidget,  CheckBox, GroupBox, HorizontalBox, TextEdit} from "std-widgets.slint";
 import { AvaSetting, AvaSettings } from "global.slint";
 
-export AboutPage := VerticalBox {
+export component AboutPage inherits VerticalBox {
     HorizontalBox {
         alignment: center;
         Text {
@@ -17,7 +17,7 @@ export AboutPage := VerticalBox {
             width: root.width / 2;
         }
     }
-    TextEdit { 
+    TextEdit {
         text: AvaSettings.about;
     }
 }

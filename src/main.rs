@@ -88,7 +88,7 @@ fn init_slots(ui: &AppWindow) {
 
 fn run_main() {
     let all_settings = settings::get_all_settings();
-    let ui = AppWindow::new();
+    let ui = AppWindow::new().unwrap();
     let globals = AvaSettings::get(&ui);
     globals.set_settings(
         Rc::new(VecModel::from(
@@ -103,7 +103,7 @@ fn run_main() {
 
     init_slots(&ui);
 
-    ui.run();
+    ui.run().unwrap();
 }
 
 fn main() {

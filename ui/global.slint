@@ -1,4 +1,4 @@
-export struct AvaSetting := {
+export struct AvaSetting {
     name :string,
     current: string,
     tochange: string,
@@ -6,7 +6,7 @@ export struct AvaSetting := {
     doc: string,
 }
 
-export global AvaSettings := {
-    property <[AvaSetting]> settings :[] ;
-    property <string> about ;
+export global AvaSettings {
+    in-out property <[AvaSetting]> settings :[] ;
+    in-out property <string> about ;
 }

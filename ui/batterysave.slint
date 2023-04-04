@@ -2,17 +2,17 @@ import { Button, VerticalBox , TabWidget,  CheckBox, GroupBox, HorizontalBox, Te
 
 import { AvaSetting, AvaSettings } from "global.slint";
 
-export global BatteryCallbacks := {
+export global BatteryCallbacks {
     callback Exit();
     callback ChangeBattery();
     callback Refresh();
 }
 
-export BatterySavePage :=  VerticalLayout {
-    HorizontalBox { 
+export component BatterySavePage inherits  VerticalLayout {
+    HorizontalBox {
         alignment: center;
 
-        Text { 
+        Text {
             text: "Green Dam Girl Batter Saver";
             font-size: 25px;
             font-weight: 20;
@@ -20,19 +20,15 @@ export BatterySavePage :=  VerticalLayout {
         Button {
             height: 35px;
             width: 35px;
-            Image {
-                source: @image-url("../misc/icons/refresh.svg");
-                height: 35px;
-                width: 35px;
-            }
+            text: "↻";
             clicked => { BatteryCallbacks.Refresh(); }
         }
     }
     HorizontalLayout {
         for unitsetting in AvaSettings.settings : GroupBox {
             VerticalBox {
-                Text { 
-                    text: unitsetting.name; 
+                Text {
+                    text: unitsetting.name;
                     font-size: 20px;
                     font-weight: 10;
                 }
@@ -41,27 +37,27 @@ export BatterySavePage :=  VerticalLayout {
                 for selected in unitsetting.selects : CheckBox {
                     text: selected;
                     checked: selected == unitsetting.tochange;
-                    toggled => { 
-                        if(checked) {
+                    toggled => {
+                        if(self.checked) {
                             unitsetting.tochange = selected;
                         }
                     }
                 }
-                TextEdit { 
+                TextEdit {
                     text: unitsetting.doc;
                     wrap: word-wrap;
                 }
             }
         }
     }
-    HorizontalBox { 
+    HorizontalBox {
         alignment: end;
-        Button { 
+        Button {
             height: 30px;
             text: "Cancel";
             clicked => { BatteryCallbacks.Exit(); }
         }
-        Button { 
+        Button {
             height: 30px;
             text: "Apply";
             clicked => { BatteryCallbacks.ChangeBattery(); }
